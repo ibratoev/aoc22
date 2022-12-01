@@ -1,4 +1,4 @@
-package aoc22
+package main
 
 import "fmt"
 
