@@ -12,8 +12,8 @@ type Shape int
 
 const (
 	Rock     Shape = 1
-	Paper          = 2
-	Scissors       = 3
+	Paper    Shape = 2
+	Scissors Shape = 3
 )
 
 var stringToShape = map[byte]Shape{
