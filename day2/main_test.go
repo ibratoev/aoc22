@@ -27,3 +27,10 @@ func TestDay2(t *testing.T) {
 		t.Errorf("Unexpected result: %d", got)
 	}
 }
+
+func TestDay2Part2(t *testing.T) {
+	got := Day2Part2()
+	if got != 13193 {
+		t.Errorf("Unexpected result: %d", got)
+	}
+}
