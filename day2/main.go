@@ -45,15 +45,7 @@ func ScoreRound(opponentShape Shape, myShape Shape) int {
 		return Draw
 	}
 
-	if myShape == Rock && opponentShape == Scissors {
-		return Won
-	}
-
-	if myShape == Paper && opponentShape == Rock {
-		return Won
-	}
-
-	if myShape == Scissors && opponentShape == Paper {
+	if winningShape[opponentShape] == myShape {
 		return Won
 	}
 
