@@ -19,12 +19,12 @@ func getDuplicateItem(items string) rune {
 	var length = len([]rune(items))
 	var types = make(map[rune]bool)
 
-	for pos, char := range items {
+	for pos, item := range items {
 		if pos < length/2 {
-			types[char] = true
+			types[item] = true
 		} else {
-			if types[char] {
-				return char
+			if types[item] {
+				return item
 			}
 		}
 	}
@@ -42,21 +42,18 @@ func Day3() int {
 	return sum
 }
 
-func findBadge(group [3]string) rune {
+func findBadge(group []string) rune {
 	var badges = make(map[rune]int)
 	for _, rucksack := range group {
 		var types = make(map[rune]bool)
 		for _, item := range rucksack {
 			if !types[item] {
 				badges[item]++
+				if badges[item] == 3 {
+					return item
+				}
 			}
 			types[item] = true
-		}
-	}
-
-	for key, value := range badges {
-		if value == 3 {
-			return key
 		}
 	}
 
@@ -65,12 +62,9 @@ func findBadge(group [3]string) rune {
 
 func Day3Part2() int {
 	var sum = 0
-	var group [3]string
-	for pos, line := range strings.Split(strings.TrimRight(input, "\n"), "\n") {
-		group[pos%3] = line
-		if pos%3 == 2 {
-			sum += getItemPriority(findBadge(group))
-		}
+	var lines = strings.Split(strings.TrimRight(input, "\n"), "\n")
+	for i := 3; i <= len(lines); i += 3 {
+		sum += getItemPriority(findBadge(lines[i-3 : i]))
 	}
 
 	return sum
