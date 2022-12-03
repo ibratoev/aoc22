@@ -48,3 +48,26 @@ func TestDay3(t *testing.T) {
 		t.Errorf("Unexpected result: %d", got)
 	}
 }
+
+func TestFindBadge(t *testing.T) {
+	var data = []struct {
+		group    [3]string
+		expected rune
+	}{
+		{[3]string{"vJrwpWtwJgWrhcsFMMfFFhFp", "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL", "PmmdzqPrVvPwwTWBwg"}, 'r'},
+		{[3]string{"wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn", "ttgJtRGJQctTZtZT", "CrZsJsPPZsGzwwsLwLmpwMDw"}, 'Z'},
+	}
+
+	for _, tt := range data {
+		badge := findBadge(tt.group)
+		if badge != tt.expected {
+			t.Errorf("Unexpected badge: %+v,", tt)
+		}
+	}
+}
+func TestDay3Part2(t *testing.T) {
+	got := Day3Part2()
+	if got != 2668 {
+		t.Errorf("Unexpected result: %d", got)
+	}
+}
