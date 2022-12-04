@@ -30,10 +30,11 @@ func TestRangeOverlap(t *testing.T) {
 		{[2]Range{{2, 8}, {9, 10}}, false},
 		{[2]Range{{4, 6}, {6, 6}}, true},
 		{[2]Range{{2, 6}, {4, 8}}, true},
+		{[2]Range{{3, 7}, {2, 8}}, true},
 	}
 
 	for _, tt := range data {
-		overlaps := tt.ranges[0].Overlap(&tt.ranges[1])
+		overlaps := tt.ranges[0].Overlaps(&tt.ranges[1])
 		if overlaps != tt.overlaps {
 			t.Errorf("Unexpected: %+v,", tt)
 		}
@@ -49,7 +50,7 @@ func TestDay4Part1(t *testing.T) {
 
 func TestDay4Part2(t *testing.T) {
 	got := Day4Part2()
-	if got != 825 {
+	if got != 956 {
 		t.Errorf("Unexpected result: %d", got)
 	}
 }

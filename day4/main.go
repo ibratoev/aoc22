@@ -19,9 +19,11 @@ func (r *Range) Contains(other *Range) bool {
 	return r.start <= other.start && r.end >= other.end
 }
 
-func (r *Range) Overlap(other *Range) bool {
+func (r *Range) Overlaps(other *Range) bool {
 	return r.Contains(&Range{other.start, other.start}) ||
-		r.Contains(&Range{other.end, other.end})
+		r.Contains(&Range{other.end, other.end}) ||
+		other.Contains(&Range{r.start, r.start}) ||
+		other.Contains(&Range{r.end, r.end})
 }
 
 func parseRange(rangeString string) Range {
@@ -56,7 +58,7 @@ func Day4Part2() int {
 	var sum = 0
 	for _, line := range strings.Split(strings.TrimRight(input, "\n"), "\n") {
 		first, second := parseRanges(line)
-		if first.Overlap(&second) {
+		if first.Overlaps(&second) {
 			sum++
 		}
 	}
