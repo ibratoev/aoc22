@@ -21,9 +21,7 @@ func (r *Range) Contains(other *Range) bool {
 
 func (r *Range) Overlaps(other *Range) bool {
 	return r.Contains(&Range{other.start, other.start}) ||
-		r.Contains(&Range{other.end, other.end}) ||
-		other.Contains(&Range{r.start, r.start}) ||
-		other.Contains(&Range{r.end, r.end})
+		other.Contains(&Range{r.start, r.start})
 }
 
 func parseRange(rangeString string) Range {
