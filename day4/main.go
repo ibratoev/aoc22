@@ -32,7 +32,7 @@ func parseRange(rangeString string) Range {
 		}
 	}
 
-	panic(fmt.Sprintf("Error parsing start: %v", rangeString))
+	panic(fmt.Sprintf("Error parsing range: %v", rangeString))
 }
 
 func parseRanges(line string) (Range, Range) {
