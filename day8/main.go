@@ -67,9 +67,9 @@ func Day8Part1() int {
 		}
 	}
 
-	// CHECK column <-
 	for c := 0; c < 99; c++ {
 		var maxC byte = 0
+		// CHECK column <-
 		for l := 98; l > -1; l-- {
 			if trees[l][c] > maxC {
 				maxC = trees[l][c]
