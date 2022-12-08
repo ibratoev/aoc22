@@ -11,7 +11,7 @@ func TestDay8Part1(t *testing.T) {
 
 func TestDay8Part2(t *testing.T) {
 	got := Day8Part2()
-	if got != 2401 {
+	if got != 157320 {
 		t.Errorf("Unexpected result: %v", got)
 	}
 }
