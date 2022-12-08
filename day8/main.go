@@ -86,3 +86,89 @@ func Day8Part1() int {
 
 	return len(visible)
 }
+
+func Day8Part2() int {
+	file, _ := f.Open("input.txt")
+	defer file.Close()
+
+	var trees [99][99]byte
+
+	scores := make(map[int]int)
+	setScore := func(l int, c int, score int) {
+		val, ok := scores[l*100+c]
+		if ok {
+			scores[l*100+c] = val * score
+		} else {
+			scores[l*100+c] = score
+		}
+	}
+
+	for l := 0; l < 99; l++ {
+		line := trees[l][:]
+		readFile(file, line)
+
+		for c := 0; c < 99; c++ {
+			// COUNT line right score ->
+			var rightScore = 0
+			for cRight := c + 1; cRight < 99; cRight++ {
+				rightScore++
+				if line[c] <= line[cRight] {
+					break
+				}
+			}
+
+			// COUNT line left score <-
+			var leftScore = 0
+			for cLeft := c - 1; cLeft > -1; cLeft-- {
+				leftScore++
+				if line[c] <= line[cLeft] {
+					break
+				}
+			}
+
+			setScore(l, c, leftScore*rightScore)
+		}
+
+		if l != 98 {
+			// READ /n to remove it from the stream
+			var newLine [1]byte
+			readFile(file, newLine[:])
+			if newLine[0] != '\n' {
+				panic("EXPECTED NEW LINE!")
+			}
+		}
+	}
+
+	for c := 0; c < 99; c++ {
+		for l := 0; l < 99; l++ {
+			// COUNT column down score <-
+			var downScore = 0
+			for lDown := l + 1; lDown < 99; lDown++ {
+				downScore++
+				if trees[l][c] <= trees[lDown][c] {
+					break
+				}
+			}
+
+			// COUNT column up score ->
+			var upScore = 0
+			for lUp := l - 1; lUp > -1; lUp-- {
+				upScore++
+				if trees[l][c] <= trees[lUp][c] {
+					break
+				}
+			}
+
+			setScore(l, c, upScore*downScore)
+		}
+	}
+
+	max := 0
+	for _, val := range scores {
+		if val > max {
+			max = val
+		}
+	}
+
+	return max
+}
