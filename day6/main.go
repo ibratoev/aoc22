@@ -3,10 +3,19 @@ package day5
 import (
 	"embed"
 	_ "embed"
+	"io/fs"
 )
 
 //go:embed input.txt
 var f embed.FS
+
+func readFile(file fs.File, a []byte) int {
+	i, err := file.Read(a)
+	if err != nil {
+		panic("Error reading from file")
+	}
+	return i
+}
 
 func Day6Part1() int {
 	file, _ := f.Open("input.txt")
@@ -14,7 +23,7 @@ func Day6Part1() int {
 	var last4 [4]byte
 	i := 0
 	for {
-		file.Read(last4[i%4 : i%4+1])
+		readFile(file, last4[i%4:i%4+1])
 		if i > 3 && last4[0] != last4[1] && last4[0] != last4[2] && last4[0] != last4[3] &&
 			last4[1] != last4[2] && last4[1] != last4[3] && last4[2] != last4[3] {
 			return i + 1
@@ -41,7 +50,7 @@ func Day6Part2() int {
 	var window [14]byte
 	i := 0
 	for {
-		file.Read(window[i%14 : i%14+1])
+		readFile(file, window[i%14:i%14+1])
 		if i > 13 {
 			if !checkDuplicates(&window) {
 				return i + 1
