@@ -55,6 +55,9 @@ func Day8Part1() int {
 				maxX2 = line[c2]
 				markVisible(l, c2)
 			}
+			if maxX2 == '9' {
+				break
+			}
 		}
 
 		if l != 98 {
@@ -74,6 +77,9 @@ func Day8Part1() int {
 			if trees[l][c] > maxC {
 				maxC = trees[l][c]
 				markVisible(l, c)
+			}
+			if maxC == '9' {
+				break
 			}
 		}
 	}
