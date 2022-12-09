@@ -2,7 +2,6 @@ package day8
 
 import (
 	"embed"
-	_ "embed"
 	"io/fs"
 )
 
@@ -96,22 +95,13 @@ func Day8Part2() int {
 
 	var trees [LINES][COLUMNS]byte
 
-	scores := make(map[int]int)
-	setScore := func(l int, c int, score int) {
-		val, ok := scores[l*10000+c]
-		if ok {
-			scores[l*10000+c] = val * score
-		} else {
-			scores[l*10000+c] = score
-		}
-	}
+	var scores [LINES][COLUMNS]int
 
 	for l := 0; l < LINES; l++ {
 		line := trees[l][:]
 		readFile(file, line)
 
 		for c := 0; c < COLUMNS; c++ {
-			// COUNT line right score ->
 			var rightScore = 0
 			for cRight := c + 1; cRight < COLUMNS; cRight++ {
 				rightScore++
@@ -129,7 +119,7 @@ func Day8Part2() int {
 				}
 			}
 
-			setScore(l, c, leftScore*rightScore)
+			scores[l][c] = leftScore * rightScore
 		}
 
 		if l != LINES-1 {
@@ -142,8 +132,11 @@ func Day8Part2() int {
 		}
 	}
 
+	max := 0
+
 	for c := 0; c < COLUMNS; c++ {
 		for l := 0; l < LINES; l++ {
+
 			// COUNT column down score <-
 			var downScore = 0
 			for lDown := l + 1; lDown < LINES; lDown++ {
@@ -162,14 +155,10 @@ func Day8Part2() int {
 				}
 			}
 
-			setScore(l, c, upScore*downScore)
-		}
-	}
-
-	max := 0
-	for _, val := range scores {
-		if val > max {
-			max = val
+			score := scores[l][c] * upScore * downScore
+			if score > max {
+				max = score
+			}
 		}
 	}
 
