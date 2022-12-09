@@ -24,37 +24,37 @@ type Knot struct {
 	y int
 }
 
-func (this *Knot) Move(direction string) {
+func (knot *Knot) Move(direction string) {
 	switch direction {
 	case Right:
-		this.x++
+		knot.x++
 	case Left:
-		this.x--
+		knot.x--
 	case Up:
-		this.y++
+		knot.y++
 	case Down:
-		this.y--
+		knot.y--
 	}
 }
 
-func (this *Knot) PullAfter(prev Knot) {
-	distanceX := mathUtils.Abs(this.x - prev.x)
-	distanceY := mathUtils.Abs(this.y - prev.y)
+func (knot *Knot) PullTo(to Knot) {
+	distanceX := mathUtils.Abs(knot.x - to.x)
+	distanceY := mathUtils.Abs(knot.y - to.y)
 
 	if distanceX <= 1 && distanceY <= 1 {
 		return
 	}
 
-	if this.x < prev.x {
-		this.x++
-	} else if this.x > prev.x {
-		this.x--
+	if knot.x < to.x {
+		knot.x++
+	} else if knot.x > to.x {
+		knot.x--
 	}
 
-	if this.y < prev.y {
-		this.y++
-	} else if this.y > prev.y {
-		this.y--
+	if knot.y < to.y {
+		knot.y++
+	} else if knot.y > to.y {
+		knot.y--
 	}
 }
 
@@ -80,7 +80,7 @@ func Day9Part1() int {
 		}
 		for i := 0; i < steps; i++ {
 			head.Move(direction)
-			tail.PullAfter(head)
+			tail.PullTo(head)
 			markVisited(tail)
 		}
 	}
@@ -123,7 +123,7 @@ func Day9Part2() int {
 
 			last := head
 			for t := 0; t < TAIL_COUNT; t++ {
-				tails[t].PullAfter(last)
+				tails[t].PullTo(last)
 				last = tails[t]
 			}
 			markVisited(last)
