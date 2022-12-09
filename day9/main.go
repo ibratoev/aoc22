@@ -13,18 +13,18 @@ import (
 var f embed.FS
 
 const (
-	Right        = "R"
-	Left  string = "L"
+	Right string = "R"
+	Left         = "L"
 	Up           = "U"
 	Down         = "D"
 )
 
-type Head struct {
+type Knot struct {
 	x int
 	y int
 }
 
-func (this *Head) Move(direction string) {
+func (this *Knot) Move(direction string) {
 	switch direction {
 	case Right:
 		this.x++
@@ -37,37 +37,35 @@ func (this *Head) Move(direction string) {
 	}
 }
 
-type Tail Head
-
-func (this *Tail) Move(head Head) {
-	distanceX := mathUtils.Abs(this.x - head.x)
-	distanceY := mathUtils.Abs(this.y - head.y)
+func (this *Knot) PullAfter(prev Knot) {
+	distanceX := mathUtils.Abs(this.x - prev.x)
+	distanceY := mathUtils.Abs(this.y - prev.y)
 
 	if distanceX <= 1 && distanceY <= 1 {
 		return
 	}
 
-	if this.x < head.x {
+	if this.x < prev.x {
 		this.x++
-	} else if this.x > head.x {
+	} else if this.x > prev.x {
 		this.x--
 	}
 
-	if this.y < head.y {
+	if this.y < prev.y {
 		this.y++
-	} else if this.y > head.y {
+	} else if this.y > prev.y {
 		this.y--
 	}
 }
 
-func Day8Part1() int {
+func Day9Part1() int {
 	file, _ := f.Open("input.txt")
 	defer file.Close()
 
-	head := Head{100, 100}
-	tail := Tail{100, 100}
-	visited := make(map[Tail]bool)
-	markVisited := func(t Tail) {
+	head := Knot{100, 100}
+	tail := Knot{100, 100}
+	visited := make(map[Knot]bool)
+	markVisited := func(t Knot) {
 		visited[t] = true
 	}
 
@@ -82,8 +80,53 @@ func Day8Part1() int {
 		}
 		for i := 0; i < steps; i++ {
 			head.Move(direction)
-			tail.Move(head)
+			tail.PullAfter(head)
 			markVisited(tail)
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		panic(err)
+	}
+
+	return len(visited)
+}
+
+const TAIL_COUNT = 9
+
+func Day9Part2() int {
+	file, _ := f.Open("input.txt")
+	defer file.Close()
+
+	head := Knot{100, 100}
+	var tails [TAIL_COUNT]Knot
+	for i := 0; i < TAIL_COUNT; i++ {
+		tails[i] = Knot{100, 100}
+	}
+
+	visited := make(map[Knot]bool)
+	markVisited := func(t Knot) {
+		visited[t] = true
+	}
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		parts := strings.Split(line, " ")
+		direction := parts[0]
+		steps, err := strconv.Atoi(parts[1])
+		if err != nil {
+			panic(err)
+		}
+		for i := 0; i < steps; i++ {
+			head.Move(direction)
+
+			last := head
+			for t := 0; t < TAIL_COUNT; t++ {
+				tails[t].PullAfter(last)
+				last = tails[t]
+			}
+			markVisited(last)
 		}
 	}
 
