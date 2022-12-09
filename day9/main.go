@@ -72,9 +72,9 @@ func Day8Part1() int {
 
 	head := Head{100, 100}
 	tail := Tail{100, 100}
-	visited := make(map[[2]int]bool)
+	visited := make(map[Tail]bool)
 	markVisited := func(t Tail) {
-		visited[[2]int{t.x, t.y}] = true
+		visited[t] = true
 	}
 
 	scanner := bufio.NewScanner(file)
