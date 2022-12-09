@@ -62,8 +62,8 @@ func Day9Part1() int {
 	file, _ := f.Open("input.txt")
 	defer file.Close()
 
-	head := Knot{100, 100}
-	tail := Knot{100, 100}
+	head := Knot{}
+	tail := Knot{}
 	visited := make(map[Knot]bool)
 	markVisited := func(t Knot) {
 		visited[t] = true
@@ -98,10 +98,10 @@ func Day9Part2() int {
 	file, _ := f.Open("input.txt")
 	defer file.Close()
 
-	head := Knot{100, 100}
+	head := Knot{}
 	var tails [TAIL_COUNT]Knot
 	for i := 0; i < TAIL_COUNT; i++ {
-		tails[i] = Knot{100, 100}
+		tails[i] = Knot{}
 	}
 
 	visited := make(map[Knot]bool)
