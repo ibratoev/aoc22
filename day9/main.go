@@ -14,9 +14,9 @@ var f embed.FS
 
 const (
 	Right string = "R"
-	Left         = "L"
-	Up           = "U"
-	Down         = "D"
+	Left  string = "L"
+	Up    string = "U"
+	Down  string = "D"
 )
 
 type Knot struct {
