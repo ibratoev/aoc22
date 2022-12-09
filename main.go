@@ -1,7 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"ibratoev/aoc22/day8"
+)
 
 func main() {
-	fmt.Println("Hello, ST6ers!!")
+	fmt.Println(day8.Day8Part2())
 }

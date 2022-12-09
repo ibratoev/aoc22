@@ -2,16 +2,16 @@ package day8
 
 import "testing"
 
-func TestDay8Part1(t *testing.T) {
+func BenchmarkDay8Part1(t *testing.B) {
 	got := Day8Part1()
-	if got != 1832 {
+	if got != 58681 {
 		t.Errorf("Unexpected result: %v", got)
 	}
 }
 
-func TestDay8Part2(t *testing.T) {
+func BenchmarkDay8Part2(t *testing.B) {
 	got := Day8Part2()
-	if got != 157320 {
+	if got != 3632850 {
 		t.Errorf("Unexpected result: %v", got)
 	}
 }

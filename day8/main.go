@@ -6,11 +6,11 @@ import (
 	"io/fs"
 )
 
-//go:embed input.txt
+//go:embed input5000.txt
 var f embed.FS
 
-const LINES = 99
-const COLUMNS = 99
+const LINES = 5000
+const COLUMNS = 5000
 
 func readFile(file fs.File, a []byte) int {
 	i, err := file.Read(a)
@@ -21,7 +21,7 @@ func readFile(file fs.File, a []byte) int {
 }
 
 func Day8Part1() int {
-	file, _ := f.Open("input.txt")
+	file, _ := f.Open("input5000.txt")
 	defer file.Close()
 
 	var trees [LINES][COLUMNS]byte
@@ -91,7 +91,7 @@ func Day8Part1() int {
 }
 
 func Day8Part2() int {
-	file, _ := f.Open("input.txt")
+	file, _ := f.Open("input5000.txt")
 	defer file.Close()
 
 	var trees [LINES][COLUMNS]byte
