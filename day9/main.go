@@ -4,19 +4,13 @@ import (
 	"bufio"
 	"embed"
 	_ "embed"
+	mathUtils "ibratoev/aoc22/utils/math"
 	"strconv"
 	"strings"
 )
 
 //go:embed input.txt
 var f embed.FS
-
-func Abs(x int) int {
-	if x < 0 {
-		return -x
-	}
-	return x
-}
 
 const (
 	Right        = "R"
@@ -46,8 +40,8 @@ func (this *Head) Move(direction string) {
 type Tail Head
 
 func (this *Tail) Move(head Head) {
-	distanceX := Abs(this.x - head.x)
-	distanceY := Abs(this.y - head.y)
+	distanceX := mathUtils.Abs(this.x - head.x)
+	distanceY := mathUtils.Abs(this.y - head.y)
 
 	if distanceX <= 1 && distanceY <= 1 {
 		return
