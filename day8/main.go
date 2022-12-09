@@ -6,11 +6,11 @@ import (
 	"io/fs"
 )
 
-//go:embed input5000.txt
+//go:embed input.txt
 var f embed.FS
 
-const LINES = 5000
-const COLUMNS = 5000
+const LINES = 99
+const COLUMNS = 99
 
 func readFile(file fs.File, a []byte) int {
 	i, err := file.Read(a)
