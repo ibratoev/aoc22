@@ -6,8 +6,11 @@ import (
 	"io/fs"
 )
 
-//go:embed input.txt
+//go:embed input5000.txt
 var f embed.FS
+
+const LINES = 5000
+const COLUMNS = 5000
 
 func readFile(file fs.File, a []byte) int {
 	i, err := file.Read(a)
@@ -21,20 +24,20 @@ func Day8Part1() int {
 	file, _ := f.Open("input.txt")
 	defer file.Close()
 
-	var trees [99][99]byte
+	var trees [LINES][COLUMNS]byte
 
 	visible := make(map[int]bool)
 	markVisible := func(l int, c int) {
-		visible[l*100+c] = true
+		visible[l*10000+c] = true
 	}
 
-	var maxColumns [99]byte
+	var maxColumns [COLUMNS]byte
 
-	for l := 0; l < 99; l++ {
+	for l := 0; l < LINES; l++ {
 		line := trees[l][:]
 		readFile(file, line)
 		var maxColumn byte = 0
-		for c := 0; c < 99; c++ {
+		for c := 0; c < COLUMNS; c++ {
 			// CHECK line ->
 			if line[c] > maxColumn {
 				maxColumn = line[c]
@@ -50,7 +53,7 @@ func Day8Part1() int {
 
 		var maxX2 byte = 0
 		// CHECK  line <-
-		for c2 := 98; c2 > -1; c2-- {
+		for c2 := COLUMNS - 1; c2 > -1; c2-- {
 			if line[c2] > maxX2 {
 				maxX2 = line[c2]
 				markVisible(l, c2)
@@ -60,7 +63,7 @@ func Day8Part1() int {
 			}
 		}
 
-		if l != 98 {
+		if l != COLUMNS-1 {
 			// READ /n to remove it from the stream
 			var newLine [1]byte
 			readFile(file, newLine[:])
@@ -70,10 +73,10 @@ func Day8Part1() int {
 		}
 	}
 
-	for c := 0; c < 99; c++ {
+	for c := 0; c < COLUMNS; c++ {
 		var maxC byte = 0
 		// CHECK column <-
-		for l := 98; l > -1; l-- {
+		for l := LINES - 1; l > -1; l-- {
 			if trees[l][c] > maxC {
 				maxC = trees[l][c]
 				markVisible(l, c)
@@ -91,26 +94,26 @@ func Day8Part2() int {
 	file, _ := f.Open("input.txt")
 	defer file.Close()
 
-	var trees [99][99]byte
+	var trees [LINES][COLUMNS]byte
 
 	scores := make(map[int]int)
 	setScore := func(l int, c int, score int) {
-		val, ok := scores[l*100+c]
+		val, ok := scores[l*10000+c]
 		if ok {
-			scores[l*100+c] = val * score
+			scores[l*10000+c] = val * score
 		} else {
-			scores[l*100+c] = score
+			scores[l*10000+c] = score
 		}
 	}
 
-	for l := 0; l < 99; l++ {
+	for l := 0; l < LINES; l++ {
 		line := trees[l][:]
 		readFile(file, line)
 
-		for c := 0; c < 99; c++ {
+		for c := 0; c < COLUMNS; c++ {
 			// COUNT line right score ->
 			var rightScore = 0
-			for cRight := c + 1; cRight < 99; cRight++ {
+			for cRight := c + 1; cRight < COLUMNS; cRight++ {
 				rightScore++
 				if line[c] <= line[cRight] {
 					break
@@ -129,7 +132,7 @@ func Day8Part2() int {
 			setScore(l, c, leftScore*rightScore)
 		}
 
-		if l != 98 {
+		if l != LINES-1 {
 			// READ /n to remove it from the stream
 			var newLine [1]byte
 			readFile(file, newLine[:])
@@ -139,11 +142,11 @@ func Day8Part2() int {
 		}
 	}
 
-	for c := 0; c < 99; c++ {
-		for l := 0; l < 99; l++ {
+	for c := 0; c < COLUMNS; c++ {
+		for l := 0; l < LINES; l++ {
 			// COUNT column down score <-
 			var downScore = 0
-			for lDown := l + 1; lDown < 99; lDown++ {
+			for lDown := l + 1; lDown < LINES; lDown++ {
 				downScore++
 				if trees[l][c] <= trees[lDown][c] {
 					break
