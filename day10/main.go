@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"embed"
 	_ "embed"
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -138,4 +139,49 @@ func Day10Part1() int {
 	}
 
 	return result
+}
+
+func Day10Part2() {
+	cpu := makeCpu()
+
+	file, _ := f.Open("input.txt")
+	defer file.Close()
+	scanner := bufio.NewScanner(file)
+	for {
+		cpu.StartCycle()
+		position := (cpu.CyclesCount - 1) % 40
+		if position == 0 {
+			fmt.Println()
+		}
+		if position >= cpu.X-1 && position <= cpu.X+1 {
+			fmt.Print("#")
+		} else {
+			fmt.Print(".")
+		}
+
+		cpu.CompleteCycle()
+		if !cpu.HasWork() {
+			if !scanner.Scan() {
+				break // no more instructions
+			}
+
+			line := scanner.Text()
+			parts := strings.Split(line, " ")
+			if parts[0] == "noop" {
+				noop := makeNoop()
+				cpu.pushInstruction(&noop)
+			} else if parts[0] == "addx" {
+				value, err := strconv.Atoi(parts[1])
+				if err != nil {
+					panic(err)
+				}
+				addx := makeAddX(value)
+				cpu.pushInstruction(&addx)
+			}
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		panic(err)
+	}
 }
